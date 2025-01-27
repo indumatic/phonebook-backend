@@ -66,6 +66,12 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
+    if(persons.some(person => person.name === request.body.name)) {
+        return response.status(404).json({
+            error: 'name must be unique'
+        })
+    }
+
     const person = {id: Math.floor(1000 * Math.random()), ...request.body}
     persons = persons.concat(person)
     response.json(person)
