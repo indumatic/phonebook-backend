@@ -25,8 +25,20 @@ let persons = [
     }
 ]
 
+//custom token for body
+morgan.token('body', (req, res) => JSON.stringify(req.body))
+morgan.format('myFormat',(tokens, req, res) => [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, 'content-length'), '-',
+        tokens['response-time'](req, res), 'ms',
+        tokens.method(req, res) === 'POST' ? tokens.body(req,res) : null //show body just if POST request
+    ].join(' ')
+)
+
 app.use(express.json())
-app.use(morgan('tiny'))
+app.use(morgan('myFormat'))
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
