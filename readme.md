@@ -1,3 +1,1 @@
-```bash
-npm init
-```
+Backend for the phonebook app from the fullstackopen course.
