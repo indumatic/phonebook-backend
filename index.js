@@ -94,6 +94,12 @@ app.post('/api/persons', (request, response) => {
     })
 })
 
+app.put('/api/persons/:id', (request, response) => {
+    Person
+        .findOneAndUpdate({_id: request.params.id},{number: request.body.number})
+        .then(result => response.json(result))
+})
+
 const PORT = process.env.PORT
 app.listen(PORT, () => {
 
