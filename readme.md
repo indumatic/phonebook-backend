@@ -1,1 +1,1 @@
-Backend for the phonebook app from the fullstackopen course.
+Phonebook app from the fullstackopen course.
