@@ -1,6 +1,8 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
+const Person = require('./models/person')
 
-let persons = [
+let people = [
     { 
       "id": "1",
       "name": "Arto Hellas", 
@@ -23,21 +25,6 @@ let persons = [
     }
 ]
 
-//get password from env
-const password = process.env.PASSWORD 
-const url = 
-    `mongodb+srv://fullstack:${password}@cluster0.dsknzto.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
-
-mongoose.set('strictQuery', false)
-mongoose.connect(url)
-
-const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
-})
-
-const Person = mongoose.model('Person', personSchema)
-
 if(process.argv.length === 2) {
     Person
         .find({})
@@ -47,6 +34,36 @@ if(process.argv.length === 2) {
                 console.log(`${person.name} ${person.number}`))
         })
         .then(() => mongoose.connection.close())
+} else if (process.argv.length === 3) {
+    switch (process.argv[2]) {
+        case 'reset':
+            Person
+                .deleteMany({})
+                .then(() => console.log('collection removed'))
+                .then(() => mongoose.connection.close())
+            break
+        case 'init':
+            Promise.all(
+                people
+                    .map(({id, ...person}) =>
+                        person
+                    )
+                    .map(person =>
+                        new Person(person)
+                    )
+                    .map((person,index) =>
+                        person
+                            .save()
+                            .then(() => console.log(`person ${index} saved!`))
+                    )
+            )
+            .then(() => {
+                mongoose.connection.close()
+            })
+            .then(() => console.log('connection closed'))
+            break
+
+    }
 } else if (process.argv.length === 4) {
     new Person({
         name: process.argv[2],

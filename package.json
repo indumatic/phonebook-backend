@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf dist && cd ../phonebook && npm run build && cp -r dist ../phonebook-backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
-    "mongo": "node --env-file=.env mongo.js"
+    "mongo": "node mongo.js"
   },
   "author": "fco jimenez",
   "license": "MIT",
