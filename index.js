@@ -41,6 +41,7 @@ morgan.format('myFormat',(tokens, req, res) => [
 app.use(express.json())
 app.use(morgan('myFormat'))
 app.use(cors())
+app.use(express.static('dist'))
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
