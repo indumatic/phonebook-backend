@@ -97,7 +97,7 @@ app.post('/api/persons', (request, response) => {
 app.put('/api/persons/:id', (request, response) => {
     Person
         .findOneAndUpdate({_id: request.params.id},{number: request.body.number})
-        .then(result => response.json(result))
+        .then(result => response.json({number: request.body.number, ...result}))
 })
 
 const PORT = process.env.PORT
